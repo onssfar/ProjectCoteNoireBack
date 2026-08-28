@@ -4,12 +4,14 @@ com\cotenoire\controller\GlobalExceptionHandler.class
 com\cotenoire\dto\OrderResponse.class
 com\cotenoire\entity\Product.class
 com\cotenoire\enums\PaymentStatus.class
+com\cotenoire\service\EmailService.class
 com\cotenoire\enums\PaymentMethod.class
 com\cotenoire\entity\Payment.class
 com\cotenoire\repository\ProductRepository.class
 com\cotenoire\repository\OrderRepository.class
 com\cotenoire\repository\PaymentRepository.class
 com\cotenoire\exception\ProductNotFoundException.class
+com\cotenoire\config\MailConfig.class
 com\cotenoire\service\OrderService.class
 com\cotenoire\controller\OrderController.class
 com\cotenoire\enums\DeliveryMethod.class
@@ -20,6 +22,7 @@ com\cotenoire\entity\Order.class
 com\cotenoire\exception\OrderException.class
 com\cotenoire\service\ProductService.class
 com\cotenoire\controller\HealthController.class
+com\cotenoire\config\SecurityConfig.class
 com\cotenoire\dto\OrderItemRequest.class
 com\cotenoire\controller\PaymentController.class
 com\cotenoire\dto\CreateOrderRequest.class

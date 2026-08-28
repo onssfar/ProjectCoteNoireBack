@@ -1,0 +1,26 @@
+package com.cotenoire.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                // Désactive CSRF pour notre API REST
+                .csrf(csrf -> csrf.disable())
+
+                // Autorise les appels vers l'API
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().permitAll()
+                );
+
+        return http.build();
+    }
+}

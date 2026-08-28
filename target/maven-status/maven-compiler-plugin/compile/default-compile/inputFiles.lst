@@ -1,4 +1,6 @@
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\config\CorsConfig.java
+C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\config\MailConfig.java
+C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\config\SecurityConfig.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\controller\GlobalExceptionHandler.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\controller\HealthController.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\controller\OrderController.java
@@ -24,6 +26,7 @@ C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoir
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\repository\OrderRepository.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\repository\PaymentRepository.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\repository\ProductRepository.java
+C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\service\EmailService.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\service\OrderService.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\service\PaymentService.java
 C:\Users\ons23\Documents\me\PHENIX\cote-noire-backend\src\main\java\com\cotenoire\service\ProductService.java
