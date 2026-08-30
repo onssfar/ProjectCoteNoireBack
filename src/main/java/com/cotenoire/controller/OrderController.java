@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -24,6 +26,10 @@ public class OrderController {
     @GetMapping("/{id}")
     public OrderResponse one(@PathVariable Long id) {
         return orderService.find(id);
+    }
+    @GetMapping
+    public List<OrderResponse> all() {
+        return orderService.findAll();
     }
 
     @GetMapping("/number/{number}")

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +27,27 @@ public class OrderService {
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
         this.paymentRepository = paymentRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponse> findAll() {
+
+        return orderRepository.findAll()
+                .stream()
+                .map(order -> {
+
+                    Payment payment = paymentRepository
+                            .findByOrderId(order.getId())
+                            .orElseThrow(() ->
+                                    new OrderException(
+                                            "Paiement introuvable pour la commande : "
+                                                    + order.getId()
+                                    )
+                            );
+
+                    return response(order, payment);
+                })
+                .toList();
     }
 
     @Transactional
