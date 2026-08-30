@@ -7,24 +7,47 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     private String category;
+
     private String scent;
+
     @Column(nullable = false, precision = 10, scale = 3)
     private BigDecimal price;
-    @Column(length = 1000)
-    private String image;
+
+    @Lob
+    @Column(name = "image_data", columnDefinition = "LONGBLOB")
+    private byte[] imageData;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
+
     @Column(nullable = false)
     private Integer stock = 0;
+
     @Column(nullable = false)
     private Boolean active = true;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setId(Long v) {
@@ -63,12 +86,20 @@ public class Product {
         price = v;
     }
 
-    public String getImage() {
-        return image;
+    public byte[] getImageData() {
+        return imageData;
     }
 
-    public void setImage(String v) {
-        image = v;
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public Integer getStock() {
