@@ -124,6 +124,50 @@ public class OrderService {
     }
 
     private OrderResponse response(Order o, Payment p) {
-        return new OrderResponse(o.getId(), o.getOrderNumber(), o.getStatus(), p.getMethod(), p.getStatus(), o.getDeliveryMethod(), o.getSubtotal(), o.getDeliveryFee(), o.getTotal(), o.getCurrency(), o.getCreatedAt());
+
+        Customer c = o.getCustomer();
+
+        CustomerResponse customer =
+                new CustomerResponse(
+                        c.getId(),
+                        c.getFirstName(),
+                        c.getLastName(),
+                        c.getEmail(),
+                        c.getPhone(),
+                        c.getAddress(),
+                        c.getCity(),
+                        c.getPostalCode()
+                );
+
+        var items =
+                o.getItems()
+                        .stream()
+                        .map(item ->
+                                new OrderItemResponse(
+                                        item.getProduct().getId(),
+                                        item.getProduct().getName(),
+                                        "/api/products/" + item.getProduct().getId() + "/image",
+                                        item.getQuantity(),
+                                        item.getUnitPrice(),
+                                        item.getTotalPrice()
+                                )
+                        )
+                        .toList();
+
+        return new OrderResponse(
+                o.getId(),
+                o.getOrderNumber(),
+                o.getStatus(),
+                p.getMethod(),
+                p.getStatus(),
+                o.getDeliveryMethod(),
+                o.getSubtotal(),
+                o.getDeliveryFee(),
+                o.getTotal(),
+                o.getCurrency(),
+                o.getCreatedAt(),
+                customer,
+                items
+        );
     }
 }
