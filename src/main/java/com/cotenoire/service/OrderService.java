@@ -65,7 +65,7 @@ public class OrderService {
         c = customerRepository.save(c);
         Order o = new Order();
         o.setCustomer(c);
-        o.setStatus(OrderStatus.CONFIRMED);
+        o.setStatus(OrderStatus.PENDING);
         o.setDeliveryMethod(req.deliveryMethod());
         o.setCurrency("TND");
         o.setCreatedAt(LocalDateTime.now());
@@ -116,11 +116,101 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse status(Long id, OrderStatus s) {
-        Order o = orderRepository.findById(id).orElseThrow(() -> new OrderException("Commande introuvable : " + id));
-        o.setStatus(s);
+    public OrderResponse status(Long id, OrderStatus newStatus) {
+
+        Order o = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new OrderException("Commande introuvable : " + id)
+                );
+
+        OrderStatus currentStatus = o.getStatus();
+
+
+        if (currentStatus == OrderStatus.DELIVERED) {
+            throw new OrderException(
+                    "La commande est déjà livrée. " +
+                            "Il n'est plus possible de modifier son statut."
+            );
+        }
+
+        if (currentStatus == OrderStatus.CANCELLED) {
+            throw new OrderException(
+                    "La commande est annulée. " +
+                            "Il n'est plus possible de modifier son statut."
+            );
+        }
+
+
+        if (newStatus == OrderStatus.CANCELLED) {
+
+            o.setStatus(OrderStatus.CANCELLED);
+
+            o = orderRepository.save(o);
+
+            Payment payment = paymentRepository
+                    .findByOrderId(id)
+                    .orElseThrow(() ->
+                            new OrderException("Paiement introuvable.")
+                    );
+
+            return response(o, payment);
+        }
+
+        OrderStatus expectedNextStatus;
+
+        switch (currentStatus) {
+
+            case PENDING:
+                expectedNextStatus = OrderStatus.CONFIRMED;
+                break;
+
+            case CONFIRMED:
+                expectedNextStatus = OrderStatus.PROCESSING;
+                break;
+
+            case PROCESSING:
+                expectedNextStatus = OrderStatus.SHIPPED;
+                break;
+
+            case SHIPPED:
+                expectedNextStatus = OrderStatus.DELIVERED;
+                break;
+
+            case DELIVERED:
+            case CANCELLED:
+                expectedNextStatus = null;
+                break;
+
+            default:
+                throw new OrderException(
+                        "Statut actuel de commande invalide : "
+                                + currentStatus
+                );
+        }
+
+        if (newStatus != expectedNextStatus) {
+
+            throw new OrderException(
+                    "Transition de statut non autorisée : "
+                            + currentStatus
+                            + " → "
+                            + newStatus
+                            + ". La commande doit avancer "
+                            + "uniquement vers l'étape suivante."
+            );
+        }
+
+        o.setStatus(newStatus);
+
         o = orderRepository.save(o);
-        return response(o, paymentRepository.findByOrderId(id).orElseThrow(() -> new OrderException("Paiement introuvable.")));
+
+        Payment payment = paymentRepository
+                .findByOrderId(id)
+                .orElseThrow(() ->
+                        new OrderException("Paiement introuvable.")
+                );
+
+        return response(o, payment);
     }
 
     private OrderResponse response(Order o, Payment p) {
